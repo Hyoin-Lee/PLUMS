@@ -14,6 +14,7 @@ use App\Models\QuizQuestion;
 use App\Models\QuizResult;
 use App\Models\QuizResultAnswer;
 use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class QuizQuestionController extends Controller
@@ -173,7 +174,6 @@ class QuizQuestionController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view quizzes.');
         }
 
-        $courseId = $request->get('courseId');
         $tags = $request->query('tags');
         $tagsArr = is_string($tags) ? explode(',', $tags) : null;
 
@@ -182,10 +182,19 @@ class QuizQuestionController extends Controller
         }
 
         $questions = collect();
-        $certificateLevels = Question::whereHasTag($tagsArr)->distinct()->pluck('certificate_id');
+        $certificateLevels = Question::whereHas('tags', function($query) use ($tagsArr) {
+            $query->whereIn('name', $tagsArr);
+        })->distinct()->pluck('certificate_id');
 
         foreach ($certificateLevels as $level) {
-            $questionsForLevel = Question::whereHasTag($tagsArr)->where('certificate_id', $level)->inRandomOrder()->limit(5)->get();
+            $questionsForLevel = Question::whereHas('tags', function($query) use ($tagsArr) {
+                $query->whereIn('name', $tagsArr);
+            })
+            ->where('certificate_id', $level)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+                
             $questions = $questions->merge($questionsForLevel);
         }
 

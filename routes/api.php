@@ -10,6 +10,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizQuestionController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TelemetryController;
+use App\Http\Controllers\WebsiteMessagesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/telemetry', [TelemetryController::class, 'log'])->name('telemetry');
 
+        Route::get('/website-messages', [WebsiteMessagesController::class, 'fetchMessage'])->name('website.messages.fetch');
+        Route::post('/website-messages/batch', [WebsiteMessagesController::class, 'batchFetchMessages'])->name('website.messages.batchFetch');
+        
         Route::post('/mobile/logout', [MobileApiController::class, 'logout'])->name('mobile.logout');
         Route::get('/mobile/profile', [MobileApiController::class, 'currentUser'])->name('mobile.profile');
         Route::post('/mobile/profile', [MobileApiController::class, 'updateUser'])->name('mobile.updateUser');
