@@ -89,6 +89,10 @@ class RolesAndPermissionsSeeder extends Seeder
             
             'view quizzes',
             'submit quizzes',
+
+            'mobile api current user',
+            'mobile api update user',
+            'mobile api update photo',
             
             'fetch website messages',
             'batch fetch website messages'

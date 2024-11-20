@@ -24,7 +24,7 @@ class StoreQuestionRequest extends FormRequest
         return [
             'question' => 'required',
             // 'tags' => 'sometimes|nullable|string|max:255',
-            'score' => 'required|numeric|min:0|max:10',
+            'score' => 'sometimes|numeric|min:0|max:10',
             'course_id' => 'sometimes|nullable|integer|exists:courses,id',
             'certificate_id' => 'required|integer|exists:certificates,id',
         ];
