@@ -14,6 +14,7 @@ use App\Models\QuizQuestion;
 use App\Models\QuizResult;
 use App\Models\QuizResultAnswer;
 use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class QuizQuestionController extends Controller
@@ -173,7 +174,6 @@ class QuizQuestionController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view quizzes.');
         }
 
-        $courseId = $request->get('courseId');
         $tags = $request->query('tags');
         $tagsArr = is_string($tags) ? explode(',', $tags) : null;
 
@@ -182,10 +182,19 @@ class QuizQuestionController extends Controller
         }
 
         $questions = collect();
-        $certificateLevels = Question::whereHasTag($tagsArr)->distinct()->pluck('certificate_id');
+        $certificateLevels = Question::whereHas('tags', function($query) use ($tagsArr) {
+            $query->whereIn('name', $tagsArr);
+        })->distinct()->pluck('certificate_id');
 
         foreach ($certificateLevels as $level) {
-            $questionsForLevel = Question::whereHasTag($tagsArr)->where('certificate_id', $level)->inRandomOrder()->limit(5)->get();
+            $questionsForLevel = Question::whereHas('tags', function($query) use ($tagsArr) {
+                $query->whereIn('name', $tagsArr);
+            })
+            ->where('certificate_id', $level)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+                
             $questions = $questions->merge($questionsForLevel);
         }
 
@@ -208,14 +217,13 @@ class QuizQuestionController extends Controller
     public function submitQuiz(SubmitQuizForResultsRequest $request)
     {
         $user = auth('sanctum')->user();
-
-        if (!$user->hasPermissionTo('submit quizzes')) {
-            return redirect()->route('dashboard')->with('error', 'You do not have permission to submit quizzes.');
-        }
-
         $validated = $request->validated();
         $submitted = $validated['answers'];
         $quizId = $validated['quizId'] ?? null;
+
+        if (!$user->hasPermissionTo('submit quizzes')) {
+            return ApiResponseClass::sendResponse([], 'You don\'t have permission to submit quizzes.', false, 401);
+        }
 
         if (!$quizId) {
             return $this->submitDynamicQuiz($request);
@@ -293,9 +301,14 @@ class QuizQuestionController extends Controller
             return ApiResponseClass::sendResponse([], 'Failed to grade', false, 400);
         }
 
+        if ($tags) {
+            return $this->submitQuizByTags($request);
+        }
+
         $results = [];
-        $lowestCertId = 100;
+        $lowestCertLevel = 999;
         $lowestCert = null;
+        $tagScores = [];
 
         foreach ($submitted as $submission) {
             $questionId = $submission['questionId'];
@@ -308,15 +321,24 @@ class QuizQuestionController extends Controller
 
             $certificate = $question->certificate;
             $certificateId = $certificate->id;
+            $certificateLevel = $certificate->level;
 
-            if ($lowestCertId > $certificateId) {
-                $lowestCertId = $certificateId;
+            if ($lowestCertLevel > $certificateLevel) {
+                $lowestCertLevel = $certificateLevel;
                 $lowestCert = $certificate;
             }
 
             $toScore = $question->score;
             $answers = $question->answers;
             $submittedAnswer = $answers->firstWhere('id', $answerId);
+            $tags = $question->tags()->get();
+
+            foreach ($tags as $tag) {
+                if (!isset($tagScores[$tag->name])) {
+                    $tagScores[$tag->name] = ['score' => 0, 'totalScore' => 0];
+                }
+                $tagScores[$tag->name]['totalScore'] += $toScore;
+            }
 
             if (!isset($results[$certificateId])) {
                 $results[$certificateId] = [
@@ -335,6 +357,10 @@ class QuizQuestionController extends Controller
             if ($isCorrect) {
                 $results[$certificateId]['score'] += $toScore;
                 $results[$certificateId]['correct'][] = $questionId;
+
+                foreach ($tags as $tag) {
+                    $tagScores[$tag->name]['score'] += $toScore;
+                }
             } else {
                 $results[$certificateId]['incorrect'][] = [
                     'question' => [
@@ -376,6 +402,23 @@ class QuizQuestionController extends Controller
             }
         }
 
+        $tagPerformance = [];
+        $tagRecommendations = [];
+        foreach ($tagScores as $tagName => $scores) {
+            $data = [
+                'tag' => $tagName,
+                'score' => $scores['score'],
+                'totalScore' => $scores['totalScore'],
+                'percentage' => $scores['totalScore'] > 0 ? ($scores['score'] / $scores['totalScore']) * 100 : 0,
+            ];
+
+            if ($data['percentage'] > 50) {
+                $tagRecommendations[] = $tagName;
+            }
+
+            $tagPerformance[] = $data;
+        }
+
         $finalResults = [
             'id' => "dynamic",
             'results' => $results,
@@ -385,11 +428,80 @@ class QuizQuestionController extends Controller
             'recommendation' => [
                 'id' => $highestCertLevel,
                 'certName' => $highestCertName,
-            ]
+            ],
+            'tagPerformance' => $tagPerformance,
+            'tagRecommendations' => $tagRecommendations,
         ];
 
         $this->submitResults($user, $score, $totalScore, null, $courseId, $tags, $submitted, $highestCertLevel);
-        // TelemetryClass::logTelemetry('dynamic_quiz_graded', $finalResults, 'mobile', $request->ip(), $user->id);
         return ApiResponseClass::sendResponse($finalResults, 'Graded dynamic quiz successfully');
+    }
+
+    public function submitQuizByTags(SubmitQuizForResultsRequest $request)
+    {
+        $user = auth('sanctum')->user();
+        $validated = $request->validated();
+        $submitted = $validated['answers'];
+
+        if (!$submitted || !is_array($submitted)) {
+            return ApiResponseClass::sendResponse([], 'Failed to grade', false, 400);
+        }
+
+        $tagScores = [];
+        $totalScore = 0;
+
+        foreach ($submitted as $submission) {
+            $questionId = $submission['questionId'];
+            $answerId = $submission['answerId'];
+            $question = Question::find($questionId);
+
+            if (!$question) {
+                continue;
+            }
+
+            $toScore = $question->score;
+            $answers = $question->answers;
+            $submittedAnswer = $answers->firstWhere('id', $answerId);
+            $tags = $question->tags()->get();
+
+            foreach ($tags as $tag) {
+                if (!isset($tagScores[$tag->name])) {
+                    $tagScores[$tag->name] = ['score' => 0, 'totalScore' => 0];
+                }
+                $tagScores[$tag->name]['totalScore'] += $toScore;
+
+                if ($submittedAnswer && $submittedAnswer->correct) {
+                    $tagScores[$tag->name]['score'] += $toScore;
+                }
+            }
+
+            $totalScore += $toScore;
+        }
+
+        $tagPerformance = [];
+        foreach ($tagScores as $tagName => $scores) {
+            $tagPerformance[] = [
+                'tag' => $tagName,
+                'score' => $scores['score'],
+                'totalScore' => $scores['totalScore'],
+                'percentage' => $scores['totalScore'] > 0 ? ($scores['score'] / $scores['totalScore']) * 100 : 0,
+            ];
+        }
+
+        $recommendations = [];
+        foreach ($tagPerformance as $tag) {
+            if ($tag['percentage'] > 50) {
+                $recommendations[] = $tag['tag'];
+            }
+        }
+
+        $finalResults = [
+            'totalScore' => array_sum(array_column($tagPerformance, 'score')),
+            'overallPercentage' => $totalScore > 0 ? (array_sum(array_column($tagPerformance, 'score')) / $totalScore) * 100 : 0,
+            'tagPerformance' => $tagPerformance,
+            'recommendations' => $recommendations,
+        ];
+
+        return ApiResponseClass::sendResponse($finalResults, 'Graded quiz by tags successfully');
     }
 }

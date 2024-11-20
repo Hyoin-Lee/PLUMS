@@ -65,6 +65,14 @@ class RolesAndPermissionsSeeder extends Seeder
             
             // Telemetry permissions
             'view telemetry',
+
+            // Website Messages permissions
+            'fetch website messages',
+            'batch fetch website messages',
+            'create website messages',
+            'edit website messages',
+            'delete website messages',
+            'view website messages',
             
             // Additional specific permissions
             'manage quiz questions',
@@ -77,9 +85,17 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         $studentPermissions = [
-            'view quizzes',
             'view courses',
-            'submit quizzes'
+            
+            'view quizzes',
+            'submit quizzes',
+
+            'mobile api current user',
+            'mobile api update user',
+            'mobile api update photo',
+            
+            'fetch website messages',
+            'batch fetch website messages'
         ];
 
         $staffPermissions = [
@@ -118,6 +134,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'view all quiz results',
 
             'view telemetry',
+
+            'create website messages',
+            'edit website messages',
+            'delete website messages',
+            'view website messages',
             
             'manage quiz questions',
             'view analytics',
