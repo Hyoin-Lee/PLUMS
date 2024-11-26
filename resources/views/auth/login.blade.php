@@ -1,158 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLUMS Admin Login</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6f3085, #ffca3a);
+<x-layout>
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="flex max-w-4xl w-full bg-white rounded-lg overflow-hidden shadow-lg">
+            <div class="flex-1 flex justify-center items-center bg-gradient-to-r from-purple-300 to-purple-500">
+                <div class="max-w-xs text-center text-white">
+                    <h1 class="text-4xl font-bold mb-4">Welcome to PLUMS</h1>
+                    <p class="text-lg mb-2">Manage your quizzes and courses efficiently with the PLUMS admin dashboard.</p>
+                    <p class="text-lg">Please log in to continue.</p>
+                </div>
+            </div>
+            <div class="flex-1 flex justify-center items-center p-8">
+                <div class="w-full max-w-md bg-white rounded-lg p-6 shadow-md">
+                    <h2 class="text-2xl font-bold text-purple-600 mb-6">Login</h2>
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            display: flex;
-            max-width: 1200px;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .left-panel {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: linear-gradient(to right, #ffafbd, #ffc3a0);
-        }
-        .right-panel {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 4rem;
-        }
-        .login-card {
-            width: 100%;
-            max-width: 400px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .login-card h2 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #5a67d8;
-            margin-bottom: 1.5rem;
-        }
-        .login-card form {
-            display: flex;
-            flex-direction: column;
-        }
-        .login-card label {
-            font-size: 1.2rem;
-            color: #333333;
-            margin-bottom: 0.5rem;
-        }
-        .login-card input[type="email"],
-        .login-card input[type="password"] {
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        .login-card button {
-            padding: 1rem;
-            background-color: #5a67d8;
-            color: #ffffff;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .login-card button:hover {
-            background-color: #4c56a7;
-        }
-        .login-card .forgot-password {
-            font-size: 1rem;
-            text-align: center;
-            margin-top: 1rem;
-            color: #999999;
-        }
-        .login-card .forgot-password a {
-            color: #5a67d8;
-            text-decoration: none;
-        }
-        .left-panel-content {
-            max-width: 400px;
-            text-align: center;
-            color: #ffffff;
-        }
-        .left-panel-content h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-        .left-panel-content p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #ffffff;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="left-panel">
-        <div class="left-panel-content">
-            <h1>Welcome to PLUMS</h1>
-            <p>Manage your quizzes and courses efficiently with the PLUMS admin dashboard. </p>
-            <p>Please log in to continue.</p>
+                    @if(session('error'))
+                        <div class="text-red-500 mb-4">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login.submit') }}">
+                        @csrf
+                        <label for="email" class="block text-lg text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email" name="email" required class="border border-gray-300 rounded-md p-2 w-full mb-4" />
+
+                        @error('email')
+                        <div class="text-red-500 mb-4">
+                            {{ $message }}
+                        </div>
+                        @enderror
+
+                        <label for="password" class="block text-lg text-gray-700 mb-1">Password</label>
+                        <input type="password" id="password" name="password" required class="border border-gray-300 rounded-md p-2 w-full mb-4" />
+
+                        @error('password')
+                        <div class="text-red-500 mb-4">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                        
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 w-full">Login</button>
+                        <p class="text-center text-gray-600 mt-4"><a href="#" class="text-indigo-600 hover:underline">Forgot password?</a></p>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="right-panel">
-        <div class="login-card">
-            <h2>Login</h2>
-
-            @if(session('error'))
-                <div style="color: red; margin-bottom: 1rem;">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('login.submit') }}">
-                @csrf
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-
-                @error('email')
-                <div style="color: red; margin-bottom: 1rem;">
-                    {{ $message }}
-                </div>
-                @enderror
-
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-
-                @error('password')
-                <div style="color: red; margin-bottom: 1rem;">
-                    {{ $message }}
-                </div>
-                @enderror
-                
-                <button type="submit">Login</button>
-                <p class="forgot-password"><a href="#">Forgot password?</a></p>
-            </form>
-        </div>
-    </div>
-</div>
-</body>
-</html>
+</x-layout>

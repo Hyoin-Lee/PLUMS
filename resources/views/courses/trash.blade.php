@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <div class="py-6">
         <h1 class="text-3xl font-bold text-center text-purple-800 mb-6">Trashed Courses</h1>
 
@@ -53,4 +53,4 @@
             </table>
         </div>
     </div>
-</x-layout>
+</x-dashboard>

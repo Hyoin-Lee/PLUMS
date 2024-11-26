@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <div class="container mx-auto p-6 bg-white">
         <h1 class="text-3xl font-bold text-center text-purple-800 mb-6">Questions List</h1>
         <section class="flex justify-between items-center mb-4">
@@ -75,4 +75,4 @@
             </tfoot>
         </table>
     </div>
-</x-layout>
+</x-dashboard>

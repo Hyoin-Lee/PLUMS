@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <h2 class="text-xl font-semibold mb-2">Edit Course</h2>
     <form action="{{ route('courses.update', $course->id) }}" method="post">
         @csrf
@@ -28,4 +28,4 @@
             <a href="{{ route('courses.index') }}" class="block bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-300">Cancel</a>
         </div>
     </form>
-</x-layout>
+</x-dashboard>

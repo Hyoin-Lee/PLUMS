@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
 {{--    <div class="container mx-auto p-6 bg-white">--}}
         <h1 class="text-xl font-semibold mb-2">Edit Question</h1>
 
@@ -166,4 +166,4 @@
             </tfoot>
         </table>
     </div>
-</x-layout>
+</x-dashboard>

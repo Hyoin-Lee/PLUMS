@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <h2 class="text-xl font-semibold text-gray-800 mb-2">Create New Certificate</h2>
     <form action="{{ route('certificates.store') }}" method="POST">
         @csrf
@@ -47,4 +47,4 @@
             <a href="{{ route('certificates.index') }}" class="block bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-300">Cancel</a>
         </div>
     </form>
-</x-layout>
+</x-dashboard>

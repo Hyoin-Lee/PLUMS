@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <div class="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-red-600 mb-6 text-center">Delete Course</h2>
         <form action="{{ route('courses.destroy', $course->id) }}" method="POST">
@@ -34,4 +34,4 @@
             </div>
         </form>
     </div>
-</x-layout>
+</x-dashboard>

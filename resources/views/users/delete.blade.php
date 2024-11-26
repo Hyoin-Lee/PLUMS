@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <div class="container mx-auto p-6 bg-white">
         <h1 class="text-2xl font-bold mb-6">Delete User</h1>
 
@@ -14,4 +14,4 @@
             </div>
         </form>
     </div>
-</x-layout>
+</x-dashboard>

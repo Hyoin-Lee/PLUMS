@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <h1 class="text-xl font-semibold mb-2">Edit Quiz</h1>
 
     <form action="{{ route('quizzes.update', $quiz->id) }}" class="mb-4" method="POST">
@@ -115,4 +115,4 @@
         </tr>
         </tfoot>
     </table>
-</x-layout>
+</x-dashboard>

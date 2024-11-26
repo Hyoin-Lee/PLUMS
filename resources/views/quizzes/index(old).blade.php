@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <div class="max-w-7xl w-full bg-gray-100 p-8 rounded-lg shadow-lg">
         <h1 class="text-3xl font-bold text-center text-purple-800 mb-6">Manage Quizzes</h1>
 
@@ -90,4 +90,4 @@
             </div>
         </div>
     </div>
-</x-layout>
+</x-dashboard>
