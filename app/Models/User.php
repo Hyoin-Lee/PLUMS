@@ -67,4 +67,9 @@ class User extends Authenticatable
         if ($this->hasRole("student")) return "Student";
         return "None";
     }
+
+    function getRoleId()
+    {
+        return $this->roles->first()->id;
+    }
 }
