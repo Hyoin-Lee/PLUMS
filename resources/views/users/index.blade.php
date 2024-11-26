@@ -15,15 +15,12 @@
             @endcan
         </section>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        <section class="flex justify-between items-center mb-4">
+            <form action="{{ route('users.index') }}" method="GET" class="w-full">
+                <input type="text" name="query" value="{{ request('query') }}" placeholder="Search by user name"
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-purple-500 transition duration-200">
+            </form>
+        </section>
 
         <!-- Users table -->
         <table class="min-w-full bg-white table-auto overflow-hidden shadow-sm sm:rounded-lg border border-gray-300">

@@ -16,7 +16,13 @@ class CertificateController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view certificates.');
         }
 
-        $certificates = Certificate::query()->paginate(10);
+        // $certificates = Certificate::query()->paginate(10);
+        $search = $request->input('query');
+        $certificates = Certificate::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('cert_name', 'like', "%{$search}%");
+            })
+            ->paginate(10);
         return view('certificates.index', compact('certificates'));
     }
 

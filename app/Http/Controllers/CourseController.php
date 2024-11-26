@@ -17,7 +17,13 @@ class CourseController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view courses.');
         }
 
-        $courses = Course::with('questions')->paginate(10);
+        // $courses = Course::with('questions')->paginate(10);
+        $search = $request->input('query');
+        $courses = Course::with(['questions'])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('title', 'like', "%{$search}%");
+            })
+            ->paginate(10);
         $softDeletedCount = Course::onlyTrashed()->count();
         return view('courses.index', compact('courses', 'softDeletedCount'));
     }

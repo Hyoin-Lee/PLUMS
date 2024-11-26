@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateQuestionTagsRequest;
 
 class TagsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth('sanctum')->user();
 
@@ -18,7 +18,13 @@ class TagsController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view tags.');
         }
 
-        $tags = Tag::with('questionTags')->paginate(10);
+        // $tags = Tag::with('questionTags')->paginate(10);
+        $search = $request->input('query');
+        $tags = Tag::with(['questionTags'])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(10);
         return view('tags.index', compact('tags'));
     }
 

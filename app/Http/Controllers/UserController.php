@@ -18,16 +18,22 @@ class UserController extends Controller
      * Display users
      * @return View | RedirectResponse
      */
-    public function index(): View | RedirectResponse {
+    public function index(Request $request): View | RedirectResponse {
         $user = auth('sanctum')->user();
 
         if (!$user->hasPermissionTo('view users')) {
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view users.');
         }
 
-        $users = User::paginate(10);
-        $trashedCount = User::onlyTrashed()->latest()->get()->count();
-        return view('users.index', compact(['users', 'trashedCount']));
+        $query = $request->input('query');
+        $users = User::query()
+            ->when($query, function ($queryBuilder) use ($query) {
+                $queryBuilder->where('first_name', 'like', '%' . $query . '%')
+                    ->orWhere('last_name', 'like', '%' . $query . '%');
+            })
+            ->paginate(10);
+        $trashedCount = User::onlyTrashed()->count();
+        return view('users.index', compact('users', 'trashedCount'));
     }
 
     /**
