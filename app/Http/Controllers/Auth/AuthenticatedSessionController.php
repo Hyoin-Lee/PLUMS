@@ -25,9 +25,14 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
+        $user = Auth::user();
 
+        if ($user->hasRole('student')) {
+            Auth::logout();
+            return redirect()->back()->withErrors(['email' => 'You do not have access to this application.']);
+        }
+        
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

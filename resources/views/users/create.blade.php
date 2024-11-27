@@ -4,10 +4,21 @@
         @csrf
 
         <div class="mb-2">
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
             <input
-                id="name"
-                name="name"
+                id="first_name"
+                name="first_name"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
+                placeholder="Enter user name"
+                required
+            >
+        </div>
+
+        <div class="mb-2">
+            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+            <input
+                id="last_name"
+                name="last_name"
                 class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter user name"
                 required
@@ -51,14 +62,10 @@
 
         <div class="mb-4">
             <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-            <select
-                id="role"
-                name="role"
-                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
-                required
-            >
-                <option value="admin" selected>Admin</option>
-                <option value="staff">Staff</option>
+            <select id="role" name="role" class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
+                @foreach($roles as $role)
+                    <option value="{{ $role->name }}" {{ $role->name == "student" ? 'selected' : '' }}>{{ $role->name }}</option>
+                @endforeach
             </select>
         </div>
 
