@@ -1,11 +1,11 @@
-<x-layout>
+<x-dashboard>
     <div class="container mx-auto p-6 bg-white">
         <h1 class="text-3xl font-bold text-center text-purple-800 mb-6">Results</h1>
 
         <section class="flex justify-between items-center mb-4">
             <form action="{{ route('results.index') }}" method="GET" class="w-full">
                 <input type="text" name="query" value="{{ request('query') }}" placeholder="Search by course / student"
-                       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-purple-500 transition duration-200">
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-purple-500 transition duration-200">
             </form>
         </section>
 
@@ -52,4 +52,4 @@
             </tfoot>
         </table>
     </div>
-</x-layout>
+</x-dashboard>

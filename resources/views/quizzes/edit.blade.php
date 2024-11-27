@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <h1 class="text-xl font-semibold mb-2">Edit Quiz</h1>
 
     <form action="{{ route('quizzes.update', $quiz->id) }}" class="mb-4" method="POST">
@@ -13,7 +13,7 @@
                 id="title"
                 value="{{ old('title', $quiz->title) }}"
                 placeholder="Enter Quiz Title"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 required>
         </div>
 
@@ -23,7 +23,7 @@
                 name="description"
                 id="description"
                 placeholder="Enter Quiz Description"
-                class="form-textarea mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-textarea mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 required>{{ old('description', $quiz->description) }}</textarea>
         </div>
 
@@ -32,7 +32,7 @@
             <select
                 name="course_id"
                 id="course_id"
-                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
             >
                 <option value="">None</option>
                 @foreach($courses as $course)
@@ -49,7 +49,7 @@
                 id="time_limit"
                 value="{{ old('time_limit', $quiz->time_limit) }}"
                 placeholder="Enter Time Limit"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50">
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3">
         </div>
 
         <div class="flex items-center justify-center gap-2">
@@ -69,7 +69,7 @@
             <select
                 name="question_id"
                 id="question_id"
-                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 required>
                 @foreach($questions as $question)
                     @if($question->course_id == $quiz->course_id)
@@ -115,4 +115,4 @@
         </tr>
         </tfoot>
     </table>
-</x-layout>
+</x-dashboard>

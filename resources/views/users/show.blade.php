@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <div class="container mx-auto p-6 bg-white">
         <h1 class="text-2xl font-bold mb-6">User Details</h1>
 
@@ -21,4 +21,4 @@
             <a href="{{ route('users.index') }}" class="bg-purple-600 text-white p-2 rounded">Back to Users</a>
         </div>
     </div>
-</x-layout>
+</x-dashboard>

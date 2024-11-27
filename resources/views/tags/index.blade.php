@@ -1,8 +1,9 @@
-<x-layout>
+<x-dashboard>
     <div class="container mx-auto p-6 bg-white">
         <h1 class="text-3xl font-bold text-center text-purple-800 mb-6">Tags List</h1>
+
         <section class="flex justify-between items-center mb-4">
-            <a href="{{ route('questions.create') }}"
+            <a href="{{ route('tags.create') }}"
                 class="bg-purple-500 text-white p-2 rounded hover:bg-purple-800
                     duration-300 ease-in-out transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -11,6 +12,15 @@
                 {{ __('New Tag') }}
             </a>
         </section>
+
+
+        <section class="flex justify-between items-center mb-4">
+            <form action="{{ route('tags.index') }}" method="GET" class="w-full">
+                <input type="text" name="query" value="{{ request('query') }}" placeholder="Search by tag name"
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-purple-500 transition duration-200">
+            </form>
+        </section>
+
         <!-- Tags Table -->
         <table class="min-w-full bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-300">
             <thead class="bg-purple-500 text-white">
@@ -30,11 +40,11 @@
                     </td>
                     <td class="py-2 px-4 text-center border-b border-gray-200">
                         <div class="flex justify-center space-x-2">
-                            <form action="{{ route('questions.edit', $tag) }}" method="GET">
+                            <form action="{{ route('tags.edit', $tag) }}" method="GET">
                                 @csrf
                                 <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-1 px-3 rounded-md transition duration-200">Edit</button>
                             </form>
-                            <form action="{{ route('questions.delete', $tag) }}" method="GET">
+                            <form action="{{ route('tags.delete', $tag) }}" method="GET">
                                 @csrf
                                 <button class="w-full bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded-md transition duration-200">Delete</button>
                             </form>
@@ -56,4 +66,4 @@
             </tfoot>
         </table>
     </div>
-</x-layout>
+</x-dashboard>

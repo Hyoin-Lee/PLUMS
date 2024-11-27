@@ -114,13 +114,18 @@ class QuizQuestionController extends Controller
                     'description' => $quiz->description ?? "No description provided",
                 ];
             })->toArray(),
-            'dynamic' => $courses->map(function ($course) {
-                return [
-                    'id' => $course->id,
-                    'title' => $course->title,
-                    'description' => "A quiz dynamically generated for $course->title"
-                ];
-            })->toArray()
+            'dynamic' => $courses
+                ->filter(function ($course) {
+                    return count($course->questions) >= 1;
+                })
+                ->map(function ($course) {
+                    return [
+                        'id' => $course->id,
+                        'title' => $course->title,
+                        'description' => "A quiz dynamically generated for $course->title"
+                    ];
+                })
+                ->toArray()
         ];
 
         return ApiResponseClass::sendResponse($toReturn, "Fetched quizzes");
@@ -194,7 +199,7 @@ class QuizQuestionController extends Controller
             ->inRandomOrder()
             ->limit(5)
             ->get();
-                
+
             $questions = $questions->merge($questionsForLevel);
         }
 

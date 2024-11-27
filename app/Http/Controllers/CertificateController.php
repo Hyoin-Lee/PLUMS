@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCertificateRequest;
+use App\Http\Requests\UpdateCertificateRequest;
 use App\Models\Certificate;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CertificateController extends Controller
 {
@@ -16,7 +18,13 @@ class CertificateController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view certificates.');
         }
 
-        $certificates = Certificate::query()->paginate(10);
+        // $certificates = Certificate::query()->paginate(10);
+        $search = $request->input('query');
+        $certificates = Certificate::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('cert_name', 'like', "%{$search}%");
+            })
+            ->paginate(10);
         return view('certificates.index', compact('certificates'));
     }
 
@@ -60,9 +68,18 @@ class CertificateController extends Controller
             return redirect()->route('certificates.index')->with('error', 'You do not have permission to edit certificates.');
         }
 
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'cert_name' => 'required|string|max:255',
+            'threshold' => 'required|integer|min:0|max:100',
+            'level' => [
+                'required',
+                'integer',
+                Rule::unique('certificates', 'level')->ignore($certificate->id)
+            ]
+        ]);
+
         $certificate->update($validated);
-        return redirect(route('certificates.index'));
+        return redirect()->route('certificates.index');
     }
 
     public function delete(Certificate $certificate) {
@@ -84,6 +101,6 @@ class CertificateController extends Controller
         }
 
         $certificate->delete();
-        return redirect(route('certificates.index'))->with('success', 'Certificate deleted successfully.');
+        return redirect()->route('certificates.index')->with('success', 'Certificate deleted successfully.');
     }
 }

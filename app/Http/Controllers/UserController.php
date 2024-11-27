@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,16 +18,22 @@ class UserController extends Controller
      * Display users
      * @return View | RedirectResponse
      */
-    public function index(): View | RedirectResponse {
+    public function index(Request $request): View | RedirectResponse {
         $user = auth('sanctum')->user();
 
         if (!$user->hasPermissionTo('view users')) {
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view users.');
         }
 
-        $users = User::paginate(10);
-        $trashedCount = User::onlyTrashed()->latest()->get()->count();
-        return view('users.index', compact(['users', 'trashedCount']));
+        $query = $request->input('query');
+        $users = User::query()
+            ->when($query, function ($queryBuilder) use ($query) {
+                $queryBuilder->where('first_name', 'like', '%' . $query . '%')
+                    ->orWhere('last_name', 'like', '%' . $query . '%');
+            })
+            ->paginate(10);
+        $trashedCount = User::onlyTrashed()->count();
+        return view('users.index', compact('users', 'trashedCount'));
     }
 
     /**
@@ -64,7 +72,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
-    public function show($id): View
+    public function show($id): View | RedirectResponse
     {
         $user = auth('sanctum')->user();
 
@@ -75,72 +83,81 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view('users.show', compact('user'));
     }
-    public function edit(User $user): View
-    {
-        $user = auth('sanctum')->user();
 
-        if (!$user->hasPermissionTo('edit users')) {
+    public function edit(User $user): View | RedirectResponse
+    {
+        $admin = auth('sanctum')->user();
+
+        if (!$admin->hasPermissionTo('edit users')) {
             return redirect()->route('users.index')->with('error', 'You do not have permission to edit users.');
         }
 
-        return view('users.edit', compact('user' ));
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
         $validated = $request->validated();
-        $user = auth('sanctum')->user();
+        $admin = auth('sanctum')->user();
+        $password = $validated['password'] ?? null;
 
-        if (!$user->hasPermissionTo('edit users')) {
+        if (!$admin->hasPermissionTo('edit users')) {
             return redirect()->route('users.index')->with('error', 'You do not have permission to edit users.');
         }
 
+        unset($validated['password']);
         $user->update($validated);
 
-        if ($validated->filled('password')) {
+        if ($password) {
             $user->update([
-                'password' => bcrypt($validated->password),
+                'password' => bcrypt($password),
             ]);
         }
 
-        if ($validated['role'] && $user->hasRole('Administrator')) {
-            $user->syncRoles([$validated->role]);
+        if ($validated['role'] && $admin->hasPermissionTo('edit users')) {
+            $user->syncRoles([$validated['role']]);
         }
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
+
     public function delete(User $user): View
     {
-        $user = auth('sanctum')->user();
+        $admin = auth('sanctum')->user();
 
-        if (!$user->hasPermissionTo('delete users')) {
+        if (!$admin->hasPermissionTo('delete users')) {
             return redirect()->route('users.index')->with('error', 'You do not have permission to delete users.');
         }
 
         return view('users.delete', compact('user'));
     }
+
     public function destroy(User $user): RedirectResponse
     {
-        $user = auth('sanctum')->user();
+        $admin = auth('sanctum')->user();
 
-        if (!$user->hasPermissionTo('delete users')) {
+        if (!$admin->hasPermissionTo('delete users')) {
             return redirect()->route('users.index')->with('error', 'You do not have permission to delete users.');
         }
 
         $user->delete();
         return redirect()->route('users.index')->withSucess("Deleted {$user->name}.");
     }
+
     public function trash(): View
     {
         $users = User::onlyTrashed()->orderBy('deleted_at')->paginate(5);
         return view('users.trash', compact(['users']));
     }
+
     public function restore($user): RedirectResponse
     {
         $user = User::onlyTrashed()->findOrFail($user);
         $user->restore();
         return redirect()->back()->with('success', "Restored {$user->name}.");
     }
+
     public function remove($user): RedirectResponse
     {
         $user = User::withTrashed()->findOrFail($user);
@@ -148,6 +165,7 @@ class UserController extends Controller
         return redirect()->route('users.trash')
             ->with('success', 'User permanently deleted.');
     }
+
     public function restoreAll(): RedirectResponse
     {
         $users = User::onlyTrashed()->get();
@@ -159,6 +177,7 @@ class UserController extends Controller
         return redirect(route('users.trash'))
             ->with('success', "Successfully recovered {$trashCount} user(s).");
     }
+
     public function empty(): RedirectResponse
     {
         $users = User::onlyTrashed()->get();

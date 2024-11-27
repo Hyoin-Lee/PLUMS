@@ -32,6 +32,10 @@ class Question extends Model
         return $this->belongsTo(Certificate::class);
     }
 
+    public function course() {
+        return $this->belongsTo(Course::class);
+    }
+
     // as of right now, we don't have multiple choice questions, so this will do
     public function correctAnswer()
     {

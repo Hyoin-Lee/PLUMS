@@ -21,7 +21,13 @@ class QuestionController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view questions.');
         }
 
-        $questions = Question::with(['answers'])->paginate(10);
+        $search = $request->input('query');
+        $questions = Question::with(['answers'])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('question', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('questions.index', compact('questions'));
     }
 
@@ -92,7 +98,17 @@ class QuestionController extends Controller
         return redirect(route('questions.index'));
     }
 
-    public function destroy(Request $request, Question $question)
+    public function delete(Question $question) {
+        $user = auth('sanctum')->user();
+
+        if (!$user->hasPermissionTo('delete questions')) {
+            return redirect()->route('questions.index')->with('error', 'You do not have permission to delete questions.');
+        }
+
+        return view('questions.delete', compact('question'));
+    }
+
+    public function destroy(Question $question)
     {
         $user = auth('sanctum')->user();
 

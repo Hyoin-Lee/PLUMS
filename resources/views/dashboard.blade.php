@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <!-- Content area -->
     <main class="flex-1 p-4 overflow-y-auto">
         <!-- Dashboard sections -->

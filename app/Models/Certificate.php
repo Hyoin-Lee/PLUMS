@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Question;
 
 class Certificate extends Model
 {
@@ -14,4 +15,9 @@ class Certificate extends Model
         'threshold',
         'level'
     ];
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 }

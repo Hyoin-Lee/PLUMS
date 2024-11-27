@@ -16,7 +16,7 @@ class QuizController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth('sanctum')->user();
 
@@ -24,7 +24,13 @@ class QuizController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have permission to view quizzes.');
         }
 
-        $quizzes = Quiz::query()->paginate(10);
+        // $quizzes = Quiz::query()->paginate(10);
+        $search = $request->input('query');
+        $quizzes = Quiz::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('title', 'like', "%{$search}%");
+            })
+            ->paginate(10);
         $trashedCount = Quiz::onlyTrashed()->count();
         return view('quizzes.index', compact('quizzes', 'trashedCount'));
     }

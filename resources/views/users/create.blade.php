@@ -1,4 +1,4 @@
-<x-layout>
+<x-dashboard>
     <h2 class="text-xl font-semibold text-gray-800 mb-2">Create User</h2>
     <form action="{{ route('users.store') }}" method="POST">
         @csrf
@@ -8,7 +8,7 @@
             <input
                 id="name"
                 name="name"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter user name"
                 required
             >
@@ -19,7 +19,7 @@
             <input
                 id="email"
                 name="email"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter user email"
                 required
             >
@@ -31,7 +31,7 @@
                 id="password"
                 name="password"
                 type="password"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter password"
                 required
             >
@@ -43,7 +43,7 @@
                 id="password_confirmation"
                 name="password_confirmation"
                 type="password"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Confirm password"
                 required
             >
@@ -54,7 +54,7 @@
             <select
                 id="role"
                 name="role"
-                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 required
             >
                 <option value="admin" selected>Admin</option>
@@ -67,4 +67,4 @@
             <a href="{{ route('users.index') }}" class="block bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-300">Cancel</a>
         </div>
     </form>
-</x-layout>
+</x-dashboard>

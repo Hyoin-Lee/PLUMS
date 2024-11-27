@@ -11,7 +11,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,11 +22,15 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'sometimes|string|min:8',
-            'student_id' => 'sometimes|string|max:255|unique:users,student_id',
-            'role' => 'sometimes|string|exists:roles,name',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone_number' => 'sometimes|nullable|string|max:20',
+            'birth_date' => 'sometimes|nullable|date',
+            'gender' => 'sometimes|nullable|in:male,female,undisclosed',
+            'password' => 'sometimes|nullable|string|min:8',
+            'student_id' => 'sometimes|nullable|string|max:255',
+            'role' => 'sometimes|nullable|string|exists:roles,name',
         ];
     }
 }
