@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/certificates', [CertificateController::class, 'store'])->name('certificates.store');
     Route::get('/certificates/create', [CertificateController::class, 'create'])->name('certificates.create');
     Route::get('/certificates/{certificate}/edit', [CertificateController::class, 'edit'])->name('certificates.edit');
+    Route::put('/certificates/{certificate}', [CertificateController::class, 'update'])->name('certificates.update');
     Route::get('/certificates/{certificate}/delete', [CertificateController::class, 'delete'])->name('certificates.delete');
     Route::delete('/certificates/{certificate}', [CertificateController::class, 'destroy'])->name('certificates.destroy');
 
@@ -83,6 +84,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/courses/empty', [CourseController::class, 'empty'])->name('courses.trash-empty');
 
     Route::get('/tags', [TagsController::class, 'index'])->name('tags.index');
+    Route::get('/tags/create', [TagsController::class, 'create'])->name('tags.create');
+    Route::post('/tags', [TagsController::class, 'store'])->name('tags.store');
+    Route::get('/tags/{tag}/delete', [TagsController::class, 'delete'])->name('tags.delete');
+    Route::delete('/tags/{tag}', [TagsController::class, 'destroy'])->name('tags.destroy');
+    Route::get('/tags/{tag}/edit', [TagsController::class, 'edit'])->name('tags.edit');
+    Route::put('/tags/{tag}', [TagsController::class, 'update'])->name('tags.update');
 
     Route::get('/questions/index', [QuestionController::class, 'index'])->name('questions.index');
     Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create');

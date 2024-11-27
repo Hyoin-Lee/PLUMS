@@ -9,7 +9,7 @@
             <input
                 id="first_name"
                 name="first_name"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2"
                 value="{{ old('first_name', $user->first_name) }}"
                 placeholder="Enter first name"
                 required
@@ -21,7 +21,7 @@
             <input
                 id="last_name"
                 name="last_name"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2"
                 value="{{ old('last_name', $user->last_name) }}"
                 placeholder="Enter last name"
                 required
@@ -34,7 +34,7 @@
                 id="password"
                 name="password"
                 type="password"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2"
                 placeholder="Enter new password"
             >
         </div>
@@ -45,7 +45,7 @@
                 id="email"
                 name="email"
                 type="email"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2"
                 value="{{ old('email', $user->email) }}"
                 placeholder="Enter email address"
                 required
@@ -57,7 +57,7 @@
             <input
                 id="phone_number"
                 name="phone_number"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2"
                 value="{{ old('phone_number', $user->phone_number) }}"
                 placeholder="Enter phone number"
             >
@@ -69,14 +69,14 @@
                 id="birth_date"
                 name="birth_date"
                 type="date"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2"
                 value="{{ old('birth_date', $user->birth_date) }}"
             >
         </div>
 
         <div class="mb-4">
             <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-            <select id="gender" name="gender" class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50">
+            <select id="gender" name="gender" class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
                 <option value="male" {{ (old('gender', $user->gender) == 'male') ? 'selected' : '' }}>Male</option>
                 <option value="female" {{ (old('gender', $user->gender) == 'female') ? 'selected' : '' }}>Female</option>
                 <option value="undisclosed" {{ (old('gender', $user->gender) == 'undisclosed') ? 'selected' : '' }}>Undisclosed</option>
@@ -85,7 +85,7 @@
 
         <div class="mb-4">
             <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-            <select id="role" name="role" class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50">
+            <select id="role" name="role" class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
                 @foreach($roles as $role)
                     <option value="{{ $role->name }}" {{ $user->getRoleId() == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                 @endforeach

@@ -10,7 +10,7 @@
                 name="title"
                 id="title"
                 placeholder="Enter Title Text"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 required>
         </div>
 
@@ -21,7 +21,7 @@
                 name="description"
                 id="description"
                 placeholder="Enter Description Text"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 required>
         </div>
 
@@ -30,7 +30,7 @@
             <select
                 name="course_id"
                 id="course_id"
-                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
             >
                 <option value="">None</option>
                 @foreach($courses as $course)

@@ -9,7 +9,7 @@
                 type="text"
                 id="cert_name"
                 name="cert_name"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter certificate name title"
                 required
             >
@@ -21,7 +21,7 @@
                 type="number"
                 id="threshold"
                 name="threshold"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter certificate threshold"
                 required
             >
@@ -33,7 +33,7 @@
                 type="number"
                 id="level"
                 name="level"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter certificate level"
                 required
             >

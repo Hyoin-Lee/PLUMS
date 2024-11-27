@@ -72,7 +72,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
-    public function show($id): View
+    public function show($id): View | RedirectResponse
     {
         $user = auth('sanctum')->user();
 
@@ -84,7 +84,7 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-    public function edit(User $user): View
+    public function edit(User $user): View | RedirectResponse
     {
         $admin = auth('sanctum')->user();
 
@@ -105,7 +105,7 @@ class UserController extends Controller
         if (!$admin->hasPermissionTo('edit users')) {
             return redirect()->route('users.index')->with('error', 'You do not have permission to edit users.');
         }
-        
+
         unset($validated['password']);
         $user->update($validated);
 
@@ -132,7 +132,7 @@ class UserController extends Controller
 
         return view('users.delete', compact('user'));
     }
-    
+
     public function destroy(User $user): RedirectResponse
     {
         $admin = auth('sanctum')->user();

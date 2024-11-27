@@ -16,7 +16,7 @@
                     id="answer"
                     value="{{ old('answer', $answer->answer) }}"
                     placeholder="Enter Answer Text"
-                    class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                    class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                     required>
             </div>
 
@@ -25,7 +25,7 @@
                 <select
                     id="correct"
                     name="correct"
-                    class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50">
+                    class="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3">
                     <option value="1" {{ $answer->correct == 1 ? 'selected' : '' }}>Yes</option>
                     <option value="0" {{ $answer->correct == 0 ? 'selected' : '' }}>No</option>
                 </select>

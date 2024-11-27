@@ -8,7 +8,7 @@
             <input
                 id="title"
                 name="title"
-                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="form-input mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 placeholder="Enter course title"
                 required
             >
@@ -19,7 +19,7 @@
             <textarea
                 id="description"
                 name="description"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3 focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-3"
                 rows="5"
                 placeholder="Enter course description"
                 required
