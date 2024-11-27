@@ -49,4 +49,16 @@ class AnswerController extends Controller
         $question = Question::find($answer->question_id);
         return redirect()->route('questions.edit', $question);
     }
+
+    public function destroy(Answer $answer) {
+        $user = auth('sanctum')->user();
+
+        if (!$user->hasPermissionTo('delete answers')) {
+            return redirect()->route('questions.edit', $answer->question_id)->with('error', 'You do not have permission to delete answers.');
+        }
+
+        $answer->delete();
+        $question = Question::find($answer->question_id);
+        return redirect()->route('questions.edit', $question);
+    }
 }

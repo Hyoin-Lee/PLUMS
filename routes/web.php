@@ -98,7 +98,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
     Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
     Route::put('/questions/{question}/tags', [TagsController::class, 'applyTags'])->name('questions.updateTags');
-    Route::delete('/questions/{question}/delete', [QuestionController::class, 'delete'])->name('questions.delete');
+    Route::get('/questions/{question}/delete', [QuestionController::class, 'delete'])->name('questions.delete');
     Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 
     Route::get('/questions/trash', [QuestionController::class, 'trash'])->name('questions.trash');
@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/answers', [AnswerController::class, 'store'])->name('answers.store');
     Route::get('/answers/{answer}/edit', [AnswerController::class, 'edit'])->name('answers.edit');
     Route::put('/answers/{answer}', [AnswerController::class, 'update'])->name('answers.update');
+    Route::delete('/answers/{answer}', [AnswerController::class, 'destroy'])->name('answers.destroy');
 
     Route::get('/users/trash', [UserController::class, 'trash'])->name('users.trash');
     Route::post('/users/restore/{user}', [UserController::class, 'restore'])->name('users.trash-restore');

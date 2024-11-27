@@ -98,7 +98,17 @@ class QuestionController extends Controller
         return redirect(route('questions.index'));
     }
 
-    public function destroy(Request $request, Question $question)
+    public function delete(Question $question) {
+        $user = auth('sanctum')->user();
+
+        if (!$user->hasPermissionTo('delete questions')) {
+            return redirect()->route('questions.index')->with('error', 'You do not have permission to delete questions.');
+        }
+
+        return view('questions.delete', compact('question'));
+    }
+
+    public function destroy(Question $question)
     {
         $user = auth('sanctum')->user();
 

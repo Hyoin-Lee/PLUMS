@@ -31,7 +31,7 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="mb-2">
                 <label for="certificate_id" class="block text-sm font-medium text-gray-700">Certificate Level</label>
                 <select
@@ -149,8 +149,10 @@
                                 @csrf
                                 <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-1 px-3 rounded-md transition duration-200">Edit</button>
                             </form>
-                            <form action="{{ route('questions.delete', $answer) }}" method="GET">
+                            <form action="{{ route('answers.destroy', $answer) }}" method="POST">
                                 @csrf
+                                @method('DELETE')
+                                <input type="hidden" id="answer-id" name="id" value="{{ $answer->id }}">
                                 <button class="w-full bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded-md transition duration-200">Delete</button>
                             </form>
                         </div>
