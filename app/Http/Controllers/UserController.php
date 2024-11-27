@@ -47,7 +47,8 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', 'You do not have permission to create users.');
         }
 
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -63,9 +64,10 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'name' => $validated->input('name'),
-            'email' => $validated->input('email'),
-            'password' => bcrypt($validated->input('password')),
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
         ]);
 
         $user->assignRole($roleToAssign);
