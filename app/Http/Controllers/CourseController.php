@@ -49,7 +49,7 @@ class CourseController extends Controller
 
         $validated = $request->validated();
         Course::create($validated);
-        return view('courses.index');
+        return redirect()->route('courses.index');
     }
 
     public function edit(Course $course)

@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
-            CoursesTableSeeder::class,
-            QuizSeeder::class,
-            CertificatesTableSeeder::class,
-            QuestionsTableAndTagsSeeder::class,
-            QuizQuestionSeeder::class,
-            AnswersTableSeeder::class,
-            WebsiteMessagesSeeder::class,
+//            CoursesTableSeeder::class,
+//            QuizSeeder::class,
+//            CertificatesTableSeeder::class,
+//            QuestionsTableAndTagsSeeder::class,
+//            QuizQuestionSeeder::class,
+//            AnswersTableSeeder::class,
+//            WebsiteMessagesSeeder::class,
         ]);
     }
 }
